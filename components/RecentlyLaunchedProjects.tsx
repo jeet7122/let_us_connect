@@ -1,10 +1,13 @@
+
 import SectionHeading from "@/components/SectionHeading";
 import {RocketIcon} from "lucide-react";
-import {featuredProducts} from "@/components/FeaturedProjects";
 import ProductCard from "@/components/ProductCard";
 import EmptyCard from "@/components/EmptyCard";
+import {getRecentlyProjects} from "@/lib/projects/projects-select";
 
-export default function RecentlyLaunchedProjects() {
+export default async function RecentlyLaunchedProjects() {
+
+    const featuredProducts = await getRecentlyProjects();
     return (
 
         <section className='py-20 px-10 bg-[#f2f2f2]'>

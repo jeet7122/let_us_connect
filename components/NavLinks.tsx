@@ -1,9 +1,16 @@
 import Link from "next/link";
 import {CompassIcon, HomeIcon, RocketIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {
+    SignInButton,
+    SignUpButton,
+    SignedIn,
+    SignedOut,
+    UserButton,
+} from '@clerk/nextjs'
+import {Suspense} from "react";
 
 export default function NavLinks() {
-    let isSignedIn = false;
     return (
         <nav className='flex gap-110 self-center'>
             <div className='flex items-center justify-center gap-5'>
@@ -16,23 +23,33 @@ export default function NavLinks() {
                 </Link>
 
             </div>
+            <div className='flex gap-4'>
+                <Suspense>
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <Button className='bg-yellow-300 text-black'><RocketIcon/><span>Sign In</span></Button>
 
-            <div className='flex justify-end gap-3'>
-                {isSignedIn ? (
-                    <Link href="/submit">
-                        <Button className='bg-blue-500'><RocketIcon/><span>Publish a Project</span></Button>
-                    </Link>
-                ) : (
-                    <>
-                        <Link href="/login">
-                            <Button className='bg-blue-500'><RocketIcon/><span>Sign In</span></Button>
-                        </Link>
-                        <Link href="/signup">
+                        </SignInButton>
+                        <SignUpButton>
                             <Button className='bg-blue-500'><RocketIcon/><span>Sign Up</span></Button>
+                        </SignUpButton>
+                    </SignedOut>
+                    <SignedIn>
+                        <Link href="/submit">
+                            <Button className='bg-yellow-300 text-black'><RocketIcon/><span>Publish a Project</span></Button>
                         </Link>
-                    </>
-                )}
 
+                        <UserButton
+                            appearance={{
+                                elements:{
+                                    avatarBox: 'mb-1',
+                                }
+                            }}
+                        />
+
+                    </SignedIn>
+
+                </Suspense>
             </div>
         </nav>
     )
