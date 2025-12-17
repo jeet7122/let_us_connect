@@ -18,7 +18,7 @@ export default function NavLinks() {
                     <Button variant='secondary'><HomeIcon/><span>Home</span></Button>
 
                 </Link>
-                <Link href="/explore">
+                <Link href="/e">
                     <Button variant='secondary' className='bg-indigo-300'><CompassIcon/><span>Explore</span></Button>
                 </Link>
 
@@ -27,7 +27,7 @@ export default function NavLinks() {
                 <Suspense>
                     <SignedOut>
                         <SignInButton mode="modal">
-                            <Button className='bg-yellow-300 text-black'><RocketIcon/><span>Sign In</span></Button>
+                            <Button className='bg-yellow-300 text-black hover:text-white'><RocketIcon/><span>Sign In</span></Button>
 
                         </SignInButton>
                         <SignUpButton>

@@ -4,6 +4,7 @@ import {RocketIcon} from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import EmptyCard from "@/components/EmptyCard";
 import {getRecentlyProjects} from "@/lib/projects/projects-select";
+import VotingButton from "@/components/VotingButton";
 
 export default async function RecentlyLaunchedProjects() {
 

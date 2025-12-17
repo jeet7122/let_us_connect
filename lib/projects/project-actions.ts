@@ -5,6 +5,8 @@ import {db} from "@/db";
 import {projects} from "@/db/schema";
 import Undici from "undici-types";
 import errors = Undici.errors;
+import {eq, sql} from "drizzle-orm";
+import {refresh, revalidatePath} from "next/cache";
 
 type FormState = {
     success: boolean,
@@ -53,5 +55,70 @@ export const addProjectAction = async (prevState: FormState, formdata: FormData)
         success: false,
         message: "Failed to add project",
         errors: {}
+    }
+}
+
+export const upVoteProjectAction = async (projectId: number) => {
+    try{
+        const {userId} = await auth();
+        if(!userId) {
+            return {
+                success: false,
+                message: "You must sign in to the add project",
+                errors: {}
+            }
+        }
+        await db.update(projects).set({
+            voteCount: sql`GREATEST(0, vote_count + 1)`,
+        }).where(eq(projects.id, projectId))
+
+
+        revalidatePath('/')
+        return {
+            success: true,
+            message: "Project Voted Successfully",
+            errors: {}
+        }
+
+    }
+    catch(error){
+        console.error(error);
+        return {
+            success: false,
+            message: "Error voting",
+            voteCount: 0,
+        }
+    }
+}
+
+export const downVoteProjectAction = async (projectId: number) => {
+    try{
+        const {userId} = await auth();
+        if(!userId) {
+            return {
+                success: false,
+                message: "You must sign in to the vote a project",
+                errors: {}
+            }
+        }
+        await db.update(projects).set({
+            voteCount: sql`GREATEST(0, vote_count - 1)`,
+        }).where(eq(projects.id, projectId))
+
+        revalidatePath('/')
+        return {
+            success: true,
+            message: "Project down Voted Successfully",
+            errors: {}
+        }
+
+    }
+    catch(error){
+        console.error(error);
+        return {
+            success: false,
+            message: "Error voting",
+            voteCount: 0,
+        }
     }
 }

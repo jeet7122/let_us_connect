@@ -20,6 +20,7 @@ export async function getAllProjects(){
         .orderBy(desc(projects.voteCount));
 }
 
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export async function getRecentlyProjects(){
     await connection();
     const projectData = await getAllProjects();
@@ -32,4 +33,11 @@ export async function getRecentlyProjects(){
             project.created_at &&
             project.created_at.getTime() >= oneWeekAgo.getTime()
     );
+}
+
+export async function getProjectBySlug(slug: string){
+    const project = await db.select()
+        .from(projects)
+        .where(eq(projects.slug, slug));
+    return project?.[0] || null;
 }
