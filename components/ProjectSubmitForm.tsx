@@ -5,12 +5,12 @@ import {FormField} from "@/components/forms/FormField";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {SparklesIcon} from "lucide-react";
-import {addProjectAction} from "@/lib/projects/project-actions";
+import {addProjectAction, FormState} from "@/lib/projects/project-actions";
 import {useActionState} from "react";
 
 export default function ProjectSubmitForm()
 {
-    const initialState = {
+    const initialState: FormState = {
         success: false,
         errors: {},
         message: "",

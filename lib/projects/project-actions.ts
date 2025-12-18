@@ -4,59 +4,77 @@ import {projectSchema} from "@/lib/projects/validations";
 import {db} from "@/db";
 import {projects} from "@/db/schema";
 import Undici from "undici-types";
-import errors = Undici.errors;
 import {eq, sql} from "drizzle-orm";
-import {refresh, revalidatePath} from "next/cache";
+import { revalidatePath} from "next/cache";
 
-type FormState = {
+export type FormState = {
     success: boolean,
     errors: Record<string, string[]>
     message: string
 
 };
 
-export const addProjectAction = async (prevState: FormState, formdata: FormData) => {
+export const addProjectAction = async (
+    prevState: FormState,
+    formData: FormData
+): Promise<FormState> => {
     try {
-        const {userId} = await auth();
+        const { userId } = await auth();
         const user = await currentUser();
-        const userEmail = user?.emailAddresses[0].emailAddress || "anonymous";
-        if(!userId) {
+        const userEmail =
+            user?.emailAddresses[0]?.emailAddress ?? "anonymous";
+
+        if (!userId) {
             return {
                 success: false,
-                message: "You must sign in to the add project",
-                errors: {}
-            }
+                message: "You must sign in to add a project",
+                errors: {},
+            };
         }
 
-        const rawFormData = Object.fromEntries(formdata.entries());
-        const validateData = projectSchema.safeParse(rawFormData);
-        if(!validateData.success) {
+        const rawFormData = Object.fromEntries(formData.entries());
+        const parsed = projectSchema.safeParse(rawFormData);
+
+        if (!parsed.success) {
             return {
                 success: false,
-                message: "Invalid Data Format",
-                errors: validateData.error.flatten().fieldErrors,
-            }
+                message: "Invalid data format",
+                errors: parsed.error.flatten().fieldErrors,
+            };
         }
-        const {name, slug, github_url, techStack, description} = validateData.data;
 
-        const techStackArr = techStack ? techStack.filter((ts) => typeof ts === "string") : []
-        await db.insert(projects).values({name, slug, github_url, techStack: techStackArr, description, status: "pending", submittedBy: userEmail, userId: userId});
+        const { name, slug, github_url, techStack, description } = parsed.data;
+
+        const techStackArr =
+            techStack?.filter((ts): ts is string => typeof ts === "string") ?? [];
+
+        await db.insert(projects).values({
+            name,
+            slug,
+            github_url,
+            techStack: techStackArr,
+            description,
+            status: "pending",
+            submittedBy: userEmail,
+            userId,
+        });
+
+        revalidatePath("/");
+
         return {
             success: true,
-            message: "Project Added Successfully! It will be reviewd shortly!",
-        }
-
-
-    }
-    catch (error) {
+            message: "Project added successfully! It will be reviewed shortly.",
+            errors: {}, // ✅ REQUIRED
+        };
+    } catch (error) {
         console.error(error);
+        return {
+            success: false,
+            message: "Failed to add project",
+            errors: {},
+        };
     }
-    return {
-        success: false,
-        message: "Failed to add project",
-        errors: {}
-    }
-}
+};
 
 export const upVoteProjectAction = async (projectId: number) => {
     try{
