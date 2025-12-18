@@ -51,12 +51,14 @@ export default async function AdminContent() {
                         ))}
                     </div>
                 )}
-                <div className="w-full flex justify-center">
-                    <div className="m-10 py-10 w-[1080px] h-80 border border-gray-700 rounded-lg flex flex-col gap-y-10 items-center">
-                        <CalendarIcon size={100} color='slategray' />
-                        <p className='text-3xl'>No Request's Pending</p>
+                {pendingProjects.length === 0 && (
+                    <div className="w-full flex justify-center">
+                        <div className="m-10 py-10 w-[1080px] h-80 border border-gray-700 rounded-lg flex flex-col gap-y-10 items-center">
+                            <CalendarIcon size={100} color='slategray' />
+                            <p className='text-3xl'>No Request's Pending</p>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             <div className="mt-10">
