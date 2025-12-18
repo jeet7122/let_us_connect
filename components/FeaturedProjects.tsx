@@ -8,6 +8,7 @@ import {getFeaturedProjects} from "@/lib/projects/projects-select";
 
 export default async function FeaturedProjects() {
     const featuredProducts = await getFeaturedProjects();
+    const data = featuredProducts?.filter(fp => fp.voteCount >= 100);
     return (
         <section>
             <div className="py-20 px-10">
@@ -23,7 +24,7 @@ export default async function FeaturedProjects() {
                 </div>
                 <div className="flex justify-center py-12">
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                        {featuredProducts.map((prod) => (
+                        {data.map((prod) => (
                             <ProductCard key={prod.id} project={prod}/>
                         ))}
                     </div>

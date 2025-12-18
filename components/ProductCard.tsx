@@ -17,7 +17,7 @@ export default function ProductCard({project}: { project: Project }) {
                 <CardHeader className='flex gap-2'>
                     <div className='flex flex-col gap-2'>
                         <CardTitle>{project.name}</CardTitle>
-                        {project.voteCount > 10 && (<Badge>Featured</Badge>)}
+                        {project.voteCount > 100 && (<Badge>Featured</Badge>)}
                         <CardDescription>{project.description}</CardDescription>
                     </div>
                 </CardHeader>

@@ -1,6 +1,6 @@
 import {LucideIcon} from "lucide-react";
 
-export default function SectionHeading({ title, icon:Icon, description }: { title: string, icon?: LucideIcon, description?: string }) {
+export default function SectionHeading({ title, icon:Icon, description }: { title: string, icon?: LucideIcon, description?: any }) {
     // @ts-ignore
     return (
         <div className="flex flex-col gap-2">

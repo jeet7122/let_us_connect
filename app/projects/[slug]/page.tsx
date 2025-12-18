@@ -57,6 +57,11 @@ export default async function Projects({params}: { params: Promise<{ slug: strin
                                 <span className='font-light inline-block'>{project?.created_at?.toDateString()}</span>
                             </div>
                         </div>
+                        <div>
+                            {project?.voteCount > 100 && (
+                                <Badge><StarIcon fill='yellow'/>Featured Project</Badge>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

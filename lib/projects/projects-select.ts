@@ -1,6 +1,6 @@
 import {db} from "@/db";
 import {projects} from "@/db/schema";
-import {desc, eq} from "drizzle-orm";
+import {desc, eq, sql} from "drizzle-orm";
 import {connection} from "next/server"
 
 export async function getFeaturedProjects(){
@@ -24,7 +24,6 @@ export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 export async function getRecentlyProjects(){
     await connection();
     const projectData = await getAllProjects();
-    console.log(projectData);
     const now = new Date();
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
@@ -40,4 +39,11 @@ export async function getProjectBySlug(slug: string){
         .from(projects)
         .where(eq(projects.slug, slug));
     return project?.[0] || null;
+}
+
+export async function getAllProjectsForAdmin(){
+    return db
+        .select()
+        .from(projects)
+        .orderBy(desc(projects.voteCount));
 }
