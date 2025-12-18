@@ -4,6 +4,7 @@ import SearchBox from "@/components/SearchBox";
 import {getAllProjects} from "@/lib/projects/projects-select";
 import {Suspense} from "react";
 import SearchBoxSkeleton from "@/components/SearchBoxSkeleton";
+import {SearchBoxWrapper} from "@/app/explore/SearchBoxWrapper";
 
 export default function Explore() {
 
@@ -13,6 +14,7 @@ export default function Explore() {
                 <SectionHeading title="Explore More Projects" icon={CompassIcon}
                                 description='Browse and discover amazing projects to collaborate'/>
                 <Suspense fallback={<SearchBoxSkeleton/>}>
+                    <SearchBoxWrapper />
                 </Suspense>
             </div>
         </section>
