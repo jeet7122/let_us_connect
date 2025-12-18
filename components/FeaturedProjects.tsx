@@ -16,7 +16,7 @@ export default async function FeaturedProjects() {
                     <SectionHeading title="Featured Projects" icon={StarIcon}
                                     description="Top picks from community this week"/>
                     <Button variant='outline' className='bg-[#1113] w-[120px]'>
-                        <Link href='/projects' className='flex gap-3'>
+                        <Link href='/explore' className='flex gap-3'>
                             View All
                             <ArrowRightIcon className='mt-0.5'/>
                         </Link>
