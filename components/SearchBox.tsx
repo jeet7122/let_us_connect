@@ -49,11 +49,11 @@ export default function SearchBox({
 
     return (
         <div className="flex flex-col">
-            <div className="px-10 py-5 flex w-screen items-center">
+            <div className="px-10 py-5 flex flex-col gap-4 sm:flex sm:flex-row w-full items-center">
                 <div className="flex relative w-full">
                     <SearchIcon className="absolute left-3 top-1" />
                     <Input
-                        className="border-gray-700 w-[calc(100vw-300px)] pl-10"
+                        className="border-gray-700 w-full pl-10"
                         placeholder="Search For Projects....."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -83,11 +83,17 @@ export default function SearchBox({
                 </p>
             </div>
 
-            <div className="flex gap-x-4 gap-y-4 px-10 py-12 flex-wrap">
-                {filteredProjects.map((project) => (
-                    <ProductCard key={project.id} project={project} />
-                ))}
-            </div>
+            {filteredProjects.length > 0 ? (
+                <div className="flex gap-x-4 gap-y-4 px-10 py-12 flex-wrap">
+                    {filteredProjects.map((project) => (
+                        <ProductCard key={project.id} project={project} />
+                    ))}
+                </div>
+            ) : (
+                <div className="bg-white/60 mt-2 rounded-lg flex items-center gap-x-4 gap-y-4 px-10 py-12">
+                    <h1>No data to showcase</h1>
+                </div>
+            )}
         </div>
     );
 }
