@@ -4,14 +4,15 @@ import ProjectDetails from "@/components/ProjectDetails";
 import {getFeaturedProjects} from "@/lib/projects/projects-select";
 import ProjectDetailsSkeleton from "@/components/ProjectDetailSkeleton";
 
-export default function ProjectsPage({
+export default async function ProjectsPage({
                                          params,
                                      }: {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }) {
+    const {slug} = await params;
     return (
         <Suspense fallback={<ProjectDetailsSkeleton />}>
-            <ProjectDetails slug={params.slug} />
+            <ProjectDetails slug={slug} />
         </Suspense>
     );
 }
